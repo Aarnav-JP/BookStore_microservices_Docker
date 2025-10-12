@@ -1,0 +1,61 @@
+version: '3.8'
+
+services:
+  # Catalog Service
+  catalog:
+    build: ./catalog-service
+    container_name: bookstore_catalog
+    hostname: catalog
+    ports:
+      - "5050:5000"
+    networks:
+      bookstore-network:
+        aliases:
+          - catalog
+
+  # Payment Service  
+  payment:
+    build: ./payment-service
+    container_name: bookstore_payment
+    hostname: payment
+    ports:
+      - "5052:5002"
+    networks:
+      bookstore-network:
+        aliases:
+          - payment
+
+  # Order Service
+  order:
+    build: ./order-service
+    container_name: bookstore_order
+    hostname: order
+    ports:
+      - "5051:5001"
+    depends_on:
+      - catalog
+      - payment
+    networks:
+      bookstore-network:
+        aliases:
+          - order
+
+  # API Gateway
+  gateway:
+    build: ./api-gateway
+    container_name: bookstore_gateway
+    hostname: gateway
+    ports:
+      - "3000:3000"
+    depends_on:
+      - catalog
+      - order
+      - payment
+    networks:
+      bookstore-network:
+        aliases:
+          - gateway
+
+networks:
+  bookstore-network:
+    driver: bridge

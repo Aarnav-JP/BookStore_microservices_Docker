@@ -1,0 +1,12 @@
+{
+  "name": "payment-service",
+  "version": "1.0.0",
+  "description": "Payment processing service with 30% failure rate",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
